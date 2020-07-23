@@ -3,24 +3,26 @@
 #include "binary_trees.h"
 
 /**
- * binary_tree_node - creates a Binary tree
+ * bst_insert - inserts a node in a bst
  * @value: Integer stored in the node
- * @parent: Pointer to the parent node
+ * @tree: Pointer to root
  * Return: node created
  */
-binary_tree_t *binary_tree_node(binary_tree_t *parent, int value)
+bst_t *bst_insert(bst_t **tree, int value)
 {
-	binary_tree_t *temp;
-	binary_tree_t *new = malloc(sizeof(binary_tree_t));
+	bst_t *temp;
+	bst_t *new = calloc(1, sizeof(binary_tree_t));
+
 	if (!new)
 		return (NULL);
 	new->n = value;
-	new->parent = parent;
-	new->left = NULL;
-	new->right = NULL;
-	if (parent == NULL)
+	new->parent = *tree;
+	if (*tree == NULL)
+	{
+		*tree = new;
 		return (new);
-	temp = parent;
+	}
+	temp = *tree;
 	while (1)
 	{
 		if (value < temp->n)
@@ -33,7 +35,7 @@ binary_tree_t *binary_tree_node(binary_tree_t *parent, int value)
 			}
 			temp = temp->left;
 		}
-		else
+		else if (value > temp->n)
 		{
 			if (temp->right == NULL)
 			{
@@ -43,5 +45,7 @@ binary_tree_t *binary_tree_node(binary_tree_t *parent, int value)
 			}
 			temp = temp->right;
 		}
+		else
+			return (temp);
 	}
 }
